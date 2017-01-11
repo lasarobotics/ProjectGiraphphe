@@ -2,6 +2,10 @@
 
 https://github.com/lasarobotics/FTC4290-2014-Library/blob/2be3ec3ac60823473f3070e147acc7833ca0d414/robotc/src/4290-Teleop.c#L130
 
+        * Intake infeeds until we press the gamepad A Button RIGHT???
+        * BLowers work by pressing gamepad B Button. If pressed the second time, stop it
+        * Deleted extra assignments
+        * I replaced some if-else
 */
 package org.firstinspires.ftc.teamcode;
 
@@ -71,6 +75,27 @@ public class TeleOp extends OpMode {
     @Override
     public void loop() {
         arcade(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, leftFront, rightFront, leftBack, rightBack);
+
+        /*
+        * Intake infeeds until we press the gamepad A Button RIGHT???
+        * BLowers work by pressing gamepad B Button. If pressed the second time, stop it
+        * Deleted extra assignments
+        * I replaced some if-else
+        */
+        if (gamepad1.a)
+        {
+            intake.setPower(-0.5);
+        }else{
+            intake.setPower(0);
+        }
+        if (gamepad1.y)
+        {
+            intake.setPower(0.5);
+        }else{
+            intake.setPower(0);
+        }
+        /*
+        REPLACABLE
         if (gamepad1.a && !lastAButtonState)
         {
             if(intake.getPower() == 0){
@@ -78,14 +103,19 @@ public class TeleOp extends OpMode {
             } else {
                 intake.setPower(0);
             }
-        } else if(gamepad1.y && !lastYButtonState){
+
+        }
+
+        if(gamepad1.y && !lastYButtonState){
             if (intake.getPower() == 0)
             {
                 intake.setPower(0.5);
             }else {
                 intake.setPower(0);
             }
-        } else if(gamepad1.b && !lastBButtonState)
+        }
+
+        if(gamepad1.b && !lastBButtonState)
         {
             if (blowerA.getPower() == 0)
             {
@@ -98,9 +128,31 @@ public class TeleOp extends OpMode {
                 blowerC.setPower(0);
             }
         }
+        */
+
+
+        if (gamepad1.b)
+        {
+            if(blowerA.getPower() == 0)
+            {
+                blowerA.setPower(1);
+                blowerB.setPower(1);
+                blowerC.setPower(1);
+            }else{
+                blowerA.setPower(0);
+                blowerB.setPower(0);
+                blowerC.setPower(0);
+            }
+        }
+
+
+        /*
+        DON't think we need this
+
         lastAButtonState = gamepad1.a;
         lastYButtonState = gamepad1.y;
         lastBButtonState = gamepad1.b;
+        */
     }
 
     //y = forwards
