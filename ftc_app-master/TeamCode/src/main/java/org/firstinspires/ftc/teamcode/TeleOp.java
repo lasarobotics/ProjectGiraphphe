@@ -17,13 +17,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.Arrays;
 
 /**
- * Created by Ethan Schaffer and Abhijay on 1/10/2017.
+ * Created by Ethan Schaffer and Abhijay Saini on 1/10/2017.
  */
 
-public class TeleOp extends OpMode {
-    DcMotor leftFront, leftBack, rightFront, rightBack, intake, blowerA, blowerB, blowerC;
-    Servo ballStorage, tubeWinch, kickstand, touchSensor, goalRetainer;
-    boolean touchsensorenabled = false, blowerenabled = false, kickstandenabled = false,
+public class TeleOp extends OpMode{
+    private DcMotor leftFront, leftBack, rightFront, rightBack, intake, blowerA, blowerB, blowerC;
+    private Servo ballStorage, tubeWinch, kickstand, touchSensor, goalRetainer;
+    private boolean touchsensorenabled = false, blowerenabled = false, kickstandenabled = false,
             storageclosed = false, intakeenabled = false,
             lastBButtonState = false, lastYButtonState = false, lastAButtonState = false,
             joy2Btn1last = false, joy2Btn2last = false, joy2Btn3last = false, joy2Btn4last = false;
@@ -84,15 +84,27 @@ public class TeleOp extends OpMode {
         */
         if (gamepad1.a)
         {
-            intake.setPower(-0.5);
+            if (intake.getPower() == 0)
+            {
+                intake.setPower(-0.5);
+            }
         }else{
-            intake.setPower(0);
+            if (intake.getPower() == 11)
+            {
+                intake.setPower(0);
+            }
         }
         if (gamepad1.y)
         {
-            intake.setPower(0.5);
+            if (intake.getPower() == 0)
+            {
+                intake.setPower(0.5);
+            }
         }else{
-            intake.setPower(0);
+            if (intake.getPower() == 1)
+            {
+                intake.setPower(0);
+            }
         }
         /*
         REPLACABLE
