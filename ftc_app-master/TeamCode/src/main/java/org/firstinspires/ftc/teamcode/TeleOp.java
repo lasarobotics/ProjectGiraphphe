@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import java.util.Arrays;
 
 /**
- * Created by Ethan Schaffer on 1/10/2017.
+ * Created by Ethan Schaffer and Abhijay on 1/10/2017.
  */
 
 public class TeleOp extends OpMode {
