@@ -21,9 +21,9 @@ import java.util.Arrays;
  */
 
 public class TeleOp extends OpMode{
-    private DcMotor leftFront, leftBack, rightFront, rightBack, intake, blowerA, blowerB, blowerC;
-    private Servo ballStorage, tubeWinch, kickstand, touchSensor, goalRetainer;
-    private boolean touchsensorenabled = false, blowerenabled = false, kickstandenabled = false,
+    DcMotor leftFront, leftBack, rightFront, rightBack, intake, blowerA, blowerB, blowerC;
+    Servo ballStorage, tubeWinch, kickstand, touchSensor, goalRetainer;
+    boolean touchsensorenabled = false, blowerenabled = false, kickstandenabled = false,
             storageclosed = false, intakeenabled = false,
             lastBButtonState = false, lastYButtonState = false, lastAButtonState = false,
             joy2Btn1last = false, joy2Btn2last = false, joy2Btn3last = false, joy2Btn4last = false;
@@ -89,7 +89,7 @@ public class TeleOp extends OpMode{
                 intake.setPower(-0.5);
             }
         }else{
-            if (intake.getPower() == 11)
+            if (intake.getPower() == 1)
             {
                 intake.setPower(0);
             }
