@@ -24,6 +24,8 @@ public class TeleOp extends OpMode{
             lastBButtonState = false, lastYButtonState = false, lastAButtonState = false,
             joy2Btn1last = false, joy2Btn2last = false, joy2Btn3last = false, joy2Btn4last = false;
     private DcMotor blowers[] = {blowerA, blowerB, blowerC};
+
+
     @Override
     public void init() {
         leftFront = hardwareMap.dcMotor.get("lf");
@@ -46,10 +48,6 @@ public class TeleOp extends OpMode{
         servoSetPos(kickstand, 155);
         servoSetPos(ballStorage, 80);
         servoSetPos(touchSensor, 65);
-    }
-
-    public void servoSetPos(Servo s, double p){
-        s.setPosition(p/255);
     }
 
     /*Control Layout:
@@ -89,7 +87,8 @@ public class TeleOp extends OpMode{
         }else{
             if (intake.getPower() == 1)
             {
-                intake.setPower(0);
+                //intake.setPower(0);
+                stopMotor(intake);
             }
         }
 
@@ -102,15 +101,17 @@ public class TeleOp extends OpMode{
         }else{
             if (intake.getPower() == 1)
             {
-                intake.setPower(0);
+                //intake.setPower(0);
+                stopMotor(intake);
             }
         }
         /*
-        ________ _____  _____  _____ ___    
+        ________ _____  _____  _____ ___
         |__  __||     ||      |      | |
           |  |  |  -  ||   __ |   __ | |
           |  |  |  -  ||     ||     || |___
           ----   -----  -----  ----- |_____|
+
         if (gamepad1.a)
         {
             if(intake.getPower() == 0)
@@ -197,6 +198,11 @@ public class TeleOp extends OpMode{
         }
     }
 
+
+
+    /*DECLARATIONS*/
+
+
     //y = forwards
     //x = strafe
     //c = turn
@@ -221,8 +227,17 @@ public class TeleOp extends OpMode{
         leftBack.setPower(leftBackVal);
         rightBack.setPower(rightBackVal);
     }
+
+
+
+    /* SETS the position of a servo*/
+    public void servoSetPos(Servo s, double p){
+        s.setPosition(p/255);
+    }
+
+
     public void coastMotors (DcMotor motors[])
-            /* Supports manipulation of multiple motors*/
+            /* Supports coast manipulation of multiple motors declared in an array*/
     {
         for (double power = 1; power >= 0; power -= 0.01)
         {
@@ -232,4 +247,32 @@ public class TeleOp extends OpMode{
             }
         }
     }
+
+
+    public void coastMotor (DcMotor motor)
+            /*Supports coast manipulation of a single motor*/
+    {
+        for (double power = 1; power >= 0; power -= 0.01)
+        {
+            motor.setPower(power);
+        }
+    }
+
+
+    public void stopMotors (DcMotor motors[])
+            /* Supports stopping of multiple motors declared in an array*/
+    {
+        for (int i = 0; i < motors.length; i++)
+        {
+            motors[i].setPower(0);
+        }
+    }
+
+
+    public void stopMotor (DcMotor motor)
+            /*Suports stopping of a single DcMotor*/
+    {
+        motor.setPower(0);
+    }
+
 }
