@@ -23,7 +23,7 @@ public class TeleOp extends OpMode{
             storageclosed = false, intakeenabled = false,
             lastBButtonState = false, lastYButtonState = false, lastAButtonState = false,
             joy2Btn1last = false, joy2Btn2last = false, joy2Btn3last = false, joy2Btn4last = false;
-    DcMotor blowers[] = {blowerA, blowerB, blowerC};
+    private DcMotor blowers[] = {blowerA, blowerB, blowerC};
     @Override
     public void init() {
         leftFront = hardwareMap.dcMotor.get("lf");
