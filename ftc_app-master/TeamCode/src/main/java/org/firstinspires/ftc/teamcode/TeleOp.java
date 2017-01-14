@@ -17,13 +17,14 @@ import java.util.Arrays;
  */
 
 public class TeleOp extends OpMode{
-    private DcMotor leftFront, leftBack, rightFront, rightBack, intake, blowerA, blowerB, blowerC;
-    private Servo ballStorage, tubeWinch, kickstand, touchSensor, goalRetainer;
-    private boolean touchsensorenabled = false, blowerenabled = false, kickstandenabled = false,
+    public DcMotor leftFront, leftBack, rightFront, rightBack, intake, blowerA, blowerB, blowerC;
+    public Servo ballStorage, tubeWinch, kickstand, touchSensor, goalRetainer;
+    public boolean touchsensorenabled = false, blowerenabled = false, kickstandenabled = false,
             storageclosed = false, intakeenabled = false,
             lastBButtonState = false, lastYButtonState = false, lastAButtonState = false,
             joy2Btn1last = false, joy2Btn2last = false, joy2Btn3last = false, joy2Btn4last = false;
-    private DcMotor blowers[] = {blowerA, blowerB, blowerC};
+    public DcMotor blowers[] = {blowerA, blowerB, blowerC};
+    public final double SLOWDOWNCONST = 0.05;
 
 
     @Override
@@ -48,6 +49,10 @@ public class TeleOp extends OpMode{
         servoSetPos(kickstand, 155);
         servoSetPos(ballStorage, 80);
         servoSetPos(touchSensor, 65);
+
+        blowerA.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        blowerB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        blowerC.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     /*Control Layout:
@@ -69,6 +74,7 @@ public class TeleOp extends OpMode{
 
     @Override
     public void loop() {
+
         arcade(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, leftFront, rightFront, leftBack, rightBack);
 
         /*
@@ -78,6 +84,7 @@ public class TeleOp extends OpMode{
         * I replaced some if-else
         */
 
+        /*
         if (gamepad1.a)
         {
             if (intake.getPower() == 0)
@@ -85,7 +92,7 @@ public class TeleOp extends OpMode{
                 intake.setPower(-0.5);
             }
         }else{
-            if (intake.getPower() == 1)
+            if (intake.getPower() == -0.5)
             {
                 //intake.setPower(0);
                 stopMotor(intake);
@@ -99,37 +106,36 @@ public class TeleOp extends OpMode{
                 intake.setPower(0.5);
             }
         }else{
-            if (intake.getPower() == 1)
+            if (intake.getPower() == 0.5)
             {
                 //intake.setPower(0);
                 stopMotor(intake);
             }
         }
+        */
+
+
         /*
         ________ _____  _____  _____ ___
         |__  __||     ||      |      | |
           |  |  |  -  ||   __ |   __ | |
           |  |  |  -  ||     ||     || |___
           ----   -----  -----  ----- |_____|
-
-        if (gamepad1.a)
-        {
-            if(intake.getPower() == 0)
-            {
+        */
+        if (gamepad1.a && !lastAButtonState) {
+            if (intake.getPower() == 0) {
                 intake.setPower(-0.5);
-            }else{
+            } else {
                 intake.setPower(0);
             }
-        } else if (gamepad1.y)
-        {
-            if(intake.getPower() == 0)
-            {
+        } else if (gamepad1.y && !lastYButtonState) {
+            if (intake.getPower() == 0) {
                 intake.setPower(0.5);
-            }else{
+            } else {
                 intake.setPower(0);
             }
         }
-        */
+
 
         /*
         REPLACABLE
@@ -168,26 +174,26 @@ public class TeleOp extends OpMode{
         */
 
 
-        if (gamepad1.b)
-        {
-            if(blowerA.getPower() == 0)
-            {
+        if (gamepad1.b) {
+            if (blowerA.getPower() == 0) {
                 blowerA.setPower(1);
                 blowerB.setPower(1);
                 blowerC.setPower(1);
-            }else{
-                coastMotors(blowers);
+            }
+        } else {
+            if (blowerA.getPower() > SLOWDOWNCONST) {
+                blowerA.setPower(blowerA.getPower() - SLOWDOWNCONST);
+                blowerB.setPower(blowerB.getPower() - SLOWDOWNCONST);
+                blowerC.setPower(blowerC.getPower() - SLOWDOWNCONST);
+            } else {
+                blowerA.setPower(0);
+                blowerB.setPower(0);
+                blowerC.setPower(0);
             }
         }
 
-
-        /*
-        DON't think we need this
-
         lastAButtonState = gamepad1.a;
         lastYButtonState = gamepad1.y;
-        lastBButtonState = gamepad1.b;
-        */
     }
 
     @Override
